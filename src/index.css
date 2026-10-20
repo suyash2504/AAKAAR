@@ -140,6 +140,9 @@
 }
 .swatch-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .swatch-back { transform: rotateY(180deg); }
+/* page change: a quick fade-up, CSS only (no exit step that could stall) */
+@keyframes aak-page-in { from { opacity: 0; transform: translateY(14px); } }
+.page-in { animation: aak-page-in .35s cubic-bezier(.22, 1, .36, 1) both; }
 /* floating WhatsApp + back-to-top: soft blobs that slowly change shape, like wet clay */
 @keyframes aak-blob { 0%, 100% { border-radius: 58% 42% 50% 50% / 48% 56% 44% 52%; } 33% { border-radius: 44% 56% 42% 58% / 58% 44% 56% 42%; } 66% { border-radius: 52% 48% 60% 40% / 42% 58% 46% 54%; } }
 /* ...and gently breathe, slightly out of step with each other */
