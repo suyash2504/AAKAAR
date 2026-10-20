@@ -1,0 +1,4 @@
+# Sample inventory is live: keep crawlers out until real products are configured.
+# Before launch replace with:  User-agent: *  /  Allow: /  /  Sitemap: https://<your-domain>/sitemap.xml
+User-agent: *
+Disallow: /

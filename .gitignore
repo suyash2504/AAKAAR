@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+.vite/
+
+# local design samples and sticker print files (the Samarkan font in them is not ours to publish)
+_samples/
+print/
