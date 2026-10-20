@@ -61,11 +61,12 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                 <Link key={c.slug} to={`/collections/${c.slug}`} onClick={onClose} className="rounded-full bg-ivory/10 px-4 py-2.5 text-[15px] font-semibold hover:bg-ivory/20">{c.name}</Link>
               ))}
             </div>
-            <div className="mt-auto flex items-end justify-between gap-4 pt-10">
-              <Meaning className="text-[20px] text-ivory/80" />
-              <Link to="/wishlist" onClick={onClose} className="inline-flex items-center gap-2 rounded-full bg-butter px-4 py-2.5 text-[14px] font-bold text-ink">
-                <Heart size={16} /> Wishlist ({wishlist.length})
+            <div className="mt-auto grid gap-5 pt-10">
+              <Link to="/wishlist" onClick={onClose} className="btn btn-butter w-full justify-between whitespace-nowrap" aria-label={`Wishlist, ${wishlist.length} saved`}>
+                <span className="inline-flex items-center gap-2"><Heart size={18} /> Wishlist</span>
+                <span className="grid h-7 min-w-7 place-items-center rounded-full bg-ink px-2 text-[13px] font-extrabold text-ivory">{wishlist.length}</span>
               </Link>
+              <Meaning className="text-[20px] text-ivory/80" />
             </div>
           </nav>
         </motion.div>
