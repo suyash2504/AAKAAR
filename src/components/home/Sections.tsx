@@ -12,48 +12,37 @@ import { Img } from '../ui/Img'
 import { InkTitle } from '../ui/InkTitle'
 import { Reveal, WordsUp } from '../ui/Reveal'
 
-/* ---------- B. Find Your Form (photo strips) ---------- */
-// Tall photo strips; the one you point at (or tap) opens wide with its details.
-// On touch screens the first tap opens a strip and the second tap follows the link.
+/* ---------- B. Find Your Form (split tiles) ---------- */
+// Each collection is a tile, half photo and half colour, and the photo side alternates
+// down the list. Two columns from tablet up; an odd last tile runs the full width.
 export function FindYourForm() {
-  const [open, setOpen] = useState(2)
   return (
     <section id="find-your-form" aria-labelledby="fyf" className="wrap pt-20 md:pt-28">
       <SectionHead eyebrow="Collections" title={<InkTitle id="fyf" text="Find your" accent="form." />} note="five little worlds to wander through ✿" />
-      <Reveal className="flex h-[640px] flex-col gap-2.5 lg:h-[480px] lg:flex-row">
+      <Reveal className="grid gap-3 md:grid-cols-2 md:gap-4">
         {collections.map((c, i) => {
-          const isOpen = open === i
           const count = products.filter(c.match).length
+          const flip = i % 2 === 1
+          const wide = i === collections.length - 1 && collections.length % 2 === 1
           return (
             <Link
               key={c.slug}
               to={`/collections/${c.slug}`}
-              onPointerEnter={(e) => e.pointerType === 'mouse' && setOpen(i)}
-              onFocus={() => setOpen(i)}
-              onClick={(e) => { if (!isOpen) { e.preventDefault(); setOpen(i) } }}
               aria-label={`${c.name}, ${count} objects`}
-              className="group relative min-h-0 min-w-0 overflow-hidden rounded-[28px] transition-[flex-grow] duration-700 ease-[var(--ease-out)]"
-              style={{ flexGrow: isOpen ? 3.6 : 1, flexBasis: 0, background: c.tint }}
+              className={`group grid min-h-[150px] overflow-hidden rounded-[24px] transition-transform duration-500 ease-[var(--ease-spring)] hover:-translate-y-1 active:scale-[.98] sm:min-h-[190px] md:min-h-[230px] md:rounded-[28px] ${flip ? 'grid-cols-[1fr_42%]' : 'grid-cols-[42%_1fr]'} ${wide ? 'md:col-span-2 md:grid-cols-2' : ''}`}
+              style={{ background: c.tint }}
             >
-              <Img src={c.image.src} alt={c.image.alt} className="absolute inset-0" imgClassName="transition-transform duration-[1.2s] group-hover:scale-[1.05]" sizes="(max-width: 1024px) 100vw, 50vw" w={1100} />
-              {/* collapsed: name on a pill, sideways on desktop */}
-              <span
-                aria-hidden="true"
-                className={`display-md absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ivory/92 px-4 py-2.5 text-[16px] backdrop-blur transition-opacity duration-300 lg:top-auto lg:bottom-6 lg:translate-y-0 lg:rotate-180 lg:px-2.5 lg:py-4 lg:[writing-mode:vertical-rl] ${isOpen ? 'opacity-0' : 'opacity-100'}`}
-              >
-                {c.name}
+              <span className={`relative overflow-hidden ${flip ? 'order-2' : ''}`}>
+                <Img src={c.image.src} alt={c.image.alt} className="absolute inset-0" imgClassName="transition-transform duration-[1.2s] group-hover:scale-[1.06]" sizes="(max-width: 768px) 45vw, 30vw" w={800} />
               </span>
-              {/* open: details card */}
-              <span
-                className={`absolute inset-x-3 bottom-3 rounded-[22px] bg-ivory/95 p-4 backdrop-blur transition-[opacity,transform] duration-500 ease-[var(--ease-spring)] sm:inset-x-4 sm:bottom-4 sm:p-5 ${isOpen ? 'translate-y-0 opacity-100 delay-200' : 'pointer-events-none translate-y-3 opacity-0'}`}
-              >
-                <span className="eyebrow block text-[10.5px] text-moss">{c.label}</span>
-                <span className="mt-1.5 flex items-baseline justify-between gap-3">
-                  <span className="display-md text-[clamp(24px,2.4vw,32px)]">{c.name}</span>
-                  <span className="flex-none text-[13px] font-semibold text-muted">{count} objects</span>
+              <span className="flex flex-col justify-center gap-1.5 p-4 sm:p-6 md:p-7">
+                <span className="eyebrow text-[10px] text-deep sm:text-[11px]">{c.label}</span>
+                <span className="display-md text-[22px] sm:text-[28px] md:text-[clamp(26px,2.6vw,34px)]">{c.name}</span>
+                <span className="hidden text-[14px] leading-relaxed text-deep sm:block">{c.blurb}</span>
+                <span className="mt-1 inline-flex items-center gap-1 text-[13px] font-extrabold sm:text-[14px]">
+                  Shop {count}<span className="hidden sm:inline">objects</span>
+                  <ArrowUpRight size={16} className="transition-transform duration-500 ease-[var(--ease-spring)] group-hover:rotate-45" />
                 </span>
-                <span className="mt-1.5 hidden text-[14px] leading-relaxed text-muted sm:block">{c.blurb}</span>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-bold text-moss">Shop {c.name.split(' ')[0].toLowerCase()} <ArrowUpRight size={16} className="transition-transform duration-500 ease-[var(--ease-spring)] group-hover:rotate-45" /></span>
               </span>
             </Link>
           )
